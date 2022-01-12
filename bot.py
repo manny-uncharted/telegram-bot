@@ -8,34 +8,26 @@ PORT = int(os.environ.get('PORT', 5000))
 TOKEN = os.environ["TOKEN"]
 API_ENDPOINT = 'https://dog.ceo/api/breeds/image/random'
 
-"""
-    From python-telegram-bot docs about the Updater class
 
-    This class, which employs the telegram.ext.Dispatcher, provides a frontend to telegram.Bot to the programmer, so they can focus on coding the bot. 
-    
-    Its purpose is to receive the updates from Telegram and to deliver them to said dispatcher.
+# 
+def get_url():
+    contents = requests.get(API_ENDPOINT).json()
+    url = contents['message']
+    return url
 
-    Using the add_handler function to the dispatcher, we basically add a new command.
 
-    The line dp.add_handler(CommandHandler(‘bop’, bop)) simply defines a new command that will be triggered with /bop , and as a result, will trigger a function bop that we will soon implement.
 
-    Next, we set a webhook that will listen on 0.0.0.0 with the specified port.
+# To verify that the url we got from the API is within the file extensions we expect it to be.
+def get_image_url():
+    allowed_extension = ['jpg', 'jpeg', 'png']
+    file_extension = ''
 
-"""
-def main():
-    updater = Updater(TOKEN, use_context=True)
-    dp = updater.dispatcher
+    while file_extension not in allowed_extension:
+        url = get_url()
+        file_extension = re.search("([^.]*)$", url).group(1).lower()
+    return url
 
-    dp.add_handler(CommandHandler('bop', bop))
-    dp.add_handler(CommandHandler('hello', hello))
 
-    updater.start_webhook(listen="0.0.0.0",
-        port=int(PORT),
-        url_path=TOKEN)
-
-    updater.bot.setWebhook('https://telegram-send-bot.herokuapp.com/' + TOKEN)
-
-    updater.idle()
 
 """We get the image URL from the API and sent it through our chatbot"""
 def bop(update, context):
@@ -50,23 +42,25 @@ def hello(update):
 
     
 
-# 
-def get_url():
-    contents = requests.get(API_ENDPOINT).json()
-    url = contents['message']
-    return url
 
 
-# To verify that the url we got from the API is within the file extensions we expect it to be.
 
-def get_image_url():
-    allowed_extension = ['jpg', 'jpeg', 'png']
-    file_extension = ''
+def main():
+    updater = Updater(TOKEN, use_context=True)
+    dp = updater.dispatcher
 
-    while file_extension not in allowed_extension:
-        url = get_url()
-        file_extension = re.search("([^.]*)$", url).group(1).lower()
-    return url
+    dp.add_handler(CommandHandler('bop', bop))
+    dp.add_handler(CommandHandler('hello', hello))
+
+    updater.start_webhook(listen="0.0.0.0",
+        port=int(PORT),
+        url_path=TOKEN)
+
+    updater.bot.setWebhook('https://doogram.herokuapp.com/' + TOKEN)
+
+    updater.idle()
+
+
 
 if __name__ == '__main__':
     main()
