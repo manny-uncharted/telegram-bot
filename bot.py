@@ -34,7 +34,7 @@ def main():
         port=int(PORT),
         url_path=TOKEN)
 
-    updater.bot.setWebhook('https://your-app-name.herokuapp.com/' + TOKEN)
+    updater.bot.setWebhook('https://telegram-send-bot.herokuapp.com/' + TOKEN)
 
     updater.idle()
 
