@@ -42,10 +42,12 @@ def bop(update, context):
     url = get_image_url()
     chat_id = update.message.chat.id
     context.bot.send_photo(chat_id=chat_id, photo=url)
+    return context
 
-def hello():
+def hello(update):
     chat_username = update.message.chatid
     telegram_send.send(messages=f"Hello {chat_username} How may I help you")
+
     
 
 # 
@@ -54,7 +56,9 @@ def get_url():
     url = contents['message']
     return url
 
+
 # To verify that the url we got from the API is within the file extensions we expect it to be.
+
 def get_image_url():
     allowed_extension = ['jpg', 'jpeg', 'png']
     file_extension = ''
