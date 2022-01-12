@@ -6,7 +6,6 @@ import re
 import os
 from decouple import config
 
-Token = config("TOKEN")
 PORT = int(os.environ.get('PORT', 5000))
 TOKEN = os.environ["TOKEN"]
 API_ENDPOINT = 'https://dog.ceo/api/breeds/image/random'
