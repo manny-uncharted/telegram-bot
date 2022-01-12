@@ -1,5 +1,3 @@
-from certifi import contents
-from telegram import update
 from telegram.ext import Updater, InlineQueryHandler, CommandHandler
 import requests
 import re
@@ -68,3 +66,4 @@ def get_image_url():
 
 if __name__ == '__main__':
     main()
+    hello()
