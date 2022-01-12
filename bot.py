@@ -4,7 +4,7 @@ from telegram.ext import Updater, InlineQueryHandler, CommandHandler
 import requests
 import re
 import os
-from decouple import config
+import telegram_send
 
 PORT = int(os.environ.get('PORT', 5000))
 TOKEN = os.environ["TOKEN"]
@@ -29,6 +29,7 @@ def main():
     dp = updater.dispatcher
 
     dp.add_handler(CommandHandler('bop', bop))
+    dp.add_handler(CommandHandler('hello', hello))
 
     updater.start_webhook(listen="0.0.0.0",
         port=int(PORT),
@@ -43,6 +44,11 @@ def bop(update, context):
     url = get_image_url()
     chat_id = update.message.chat.id
     context.bot.send_photo(chat_id=chat_id, photo=url)
+
+def hello():
+    chat_username = update.message.chatid
+    telegram_send.send(messages=f"Hello {chat_username} How may I help you")
+    
 
 # 
 def get_url():
